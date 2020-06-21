@@ -1,14 +1,14 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+// import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./App.css";
-import Layout from "./components/Layout";
 import HomePage from "./pages/home";
 
 function App() {
   return (
     <>
-      <Router>
+      <HomePage />
+      {/* <Router>
         <Layout>
           <Switch>
             <Route exact path="/">
@@ -16,7 +16,7 @@ function App() {
             </Route>
           </Switch>
         </Layout>
-      </Router>
+      </Router> */}
     </>
   );
 }
