@@ -35,24 +35,13 @@ function Home() {
           const responseOne = responses[0];
           const responseTwo = responses[1];
 
-          // use/access the results
           setList(responseOne.data.candidates);
           setElection(responseTwo.data.election);
           setLoading(false);
         })
       )
       .catch((err) => console.log(err));
-
-    // .then((res) => {
-    //   setList(res.data.candidates);
-    //   setLoading(false);
-    // })
-    // .catch((err) => console.log(err));
   }, []);
-
-  // const handleSubmit = () => {
-  //   console.log({ infoVoter, selecteds });
-  // };
 
   const layout = {
     labelCol: {
@@ -75,12 +64,14 @@ function Home() {
   };
 
   const onFinish = async (values) => {
-    console.log(values, selecteds);
     try {
       await axios({
         method: "post",
         url: URL_VOTING + "/vote",
-        data: values,
+        data: {
+          info: values.user,
+          voteTo: selecteds,
+        },
       });
       message.success("Vote succeed");
     } catch (error) {
@@ -97,6 +88,7 @@ function Home() {
     <div className="container">
       <Card title={election} style={{ width: "80%" }}>
         <Card.Grid style={infoStyle}>
+          <h1>Citizens infomation</h1>
           <Form
             {...layout}
             name="nest-messages"
@@ -153,6 +145,7 @@ function Home() {
           </Form>
         </Card.Grid>
         <Card.Grid style={voteStyle}>
+          <h1>Candidates</h1>
           <Form>
             <Form.Item>
               <Checkbox.Group
