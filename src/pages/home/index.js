@@ -2,16 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { URL_VOTING } from "../../constants";
-import {
-  Card,
-  Form,
-  Input,
-  Checkbox,
-  Col,
-  Row,
-  Button,
-  InputNumber,
-} from "antd";
+import { Card, Form, Input, Checkbox, Col, Row, Button, InputNumber, message } from "antd";
 
 import "./index.css";
 
@@ -83,8 +74,19 @@ function Home() {
     },
   };
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log(values, selecteds);
+    try {
+      await axios({
+        method: "post",
+        url: URL_VOTING + "/vote",
+        data: values,
+      });
+      message.success("Vote succeed");
+    } catch (error) {
+      console.log(error);
+      message.error("Vote failed");
+    }
   };
 
   if (loading) {
@@ -112,10 +114,6 @@ function Home() {
                   pattern: "^[0-9]*$",
                   message: "CMND includes number",
                 },
-                {
-                  len: 10,
-                  message: "CMND must be 10 character",
-                },
               ]}
             >
               <Input />
@@ -140,7 +138,7 @@ function Home() {
               rules={[
                 {
                   type: "number",
-                  min: 0,
+                  min: 18,
                   max: 99,
                 },
               ]}
@@ -160,7 +158,6 @@ function Home() {
               <Checkbox.Group
                 value={selecteds}
                 onChange={(e) => {
-                  // console.log(e);
                   setSelecteds(e);
                 }}
               >
